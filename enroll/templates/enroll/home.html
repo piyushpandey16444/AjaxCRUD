@@ -21,7 +21,7 @@
             {% csrf_token %} {{form.as_p}}
             <input
               type="button"
-              id="btn-save"
+              id="save__btn"
               class="btn btn-success"
               value="Save"
             />
@@ -73,5 +73,6 @@
     <script src="{% static 'enroll/js/jquery.js' %}"></script>
     <script src="{% static 'enroll/js/pooper.js' %}"></script>
     <script src="{% static 'enroll/js/bootstrap.js' %}"></script>
+    {% include "enroll/ajax.html" %}
   </body>
 </html>

@@ -1,0 +1,33 @@
+<script>
+  $(document).ready(() => {
+    $("#save__btn").click(() => {
+      const nameData = $("#form__name").val();
+      const emailData = $("#form__email").val();
+      const passwordData = $("#form__password").val();
+      if (nameData == "") {
+        alert("Enter Name !");
+      } else if (emailData == "") {
+        alert("Enter Email !");
+      } else if (passwordData == "") {
+        alert("Enter PWD !");
+      } else {
+        console.log("data found: making ajax call !");
+        jsonData = {
+          name: nameData,
+          email: emailData,
+          password: passwordData,
+        };
+
+        // making ajax call
+        $.ajax({
+          url: "{% url 'create-user' %}",
+          method: "POST",
+          data: jsonData,
+          success: (response) => {
+            console.log("response is : ", response);
+          },
+        });
+      }
+    });
+  });
+</script>

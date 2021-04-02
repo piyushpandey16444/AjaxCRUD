@@ -1,6 +1,7 @@
 <script>
   $(document).ready(() => {
     $("#save__btn").click(() => {
+      output = "";
       const nameData = $("#form__name").val();
       const emailData = $("#form__email").val();
       const passwordData = $("#form__password").val();
@@ -26,7 +27,25 @@
           data: jsonData,
           success: (response) => {
             if (response.msg == "User Created !") {
-              console.log("User Created !", response);
+              console.log("response: ", response);
+              const allUseRecords = response.user_objs;
+              for (record in allUseRecords) {
+                output +=
+                  "<tr><td>" +
+                  allUseRecords[record].id +
+                  "</td><td>" +
+                  allUseRecords[record].name +
+                  "</td><td>" +
+                  allUseRecords[record].email +
+                  "</td><td>" +
+                  allUseRecords[record].password +
+                  "</td><td> <input type='button' value='Edit' class='btn btn-sm btn-warning' data-sid=" +
+                  allUseRecords[record].id +
+                  "/> <input type='button' value='Delete' class='btn btn-sm btn-danger' data-sid=" +
+                  allUseRecords[record].id +
+                  "/></td></tr>";
+              }
+              $("#table__tbody").html(output);
               $("form")[0].reset();
             } else {
               console.log("User Not Created !", response);

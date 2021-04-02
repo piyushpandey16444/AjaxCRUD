@@ -3,6 +3,7 @@ from .forms import User
 from .forms import UserForm
 from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse
+from .serializers import UserSerializer
 
 
 def home_view(request):
@@ -23,5 +24,6 @@ def create_user(request):
             user = User(name=name, email=email, password=password)
             user.save()
             user_objs = get_list_or_404(User)
-            return JsonResponse(data={'msg': 'User Created !', 'user_objs': user_objs})
+            serializer = UserSerializer(user_objs, many=True)
+            return JsonResponse(data={'msg': 'User Created !', 'user_objs': serializer.data})
         return JsonResponse(data=form.errors)

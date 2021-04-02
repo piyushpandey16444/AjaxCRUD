@@ -1,6 +1,7 @@
 from django.shortcuts import render, get_list_or_404
 from .forms import User
 from .forms import UserForm
+from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse
 
 
@@ -11,6 +12,7 @@ def home_view(request):
     return render(request, 'enroll/home.html', context=context)
 
 
+@csrf_exempt
 def create_user(request):
     if request.method == "POST":
         form = UserForm(request.POST)
@@ -20,5 +22,6 @@ def create_user(request):
             password = request.POST.get('password', '')
             user = User(name=name, email=email, password=password)
             user.save()
-            return JsonResponse(data={'response': 'User Created !'})
+            user_objs = get_list_or_404(User)
+            return JsonResponse(data={'msg': 'User Created !', 'user_objs': user_objs})
         return JsonResponse(data=form.errors)

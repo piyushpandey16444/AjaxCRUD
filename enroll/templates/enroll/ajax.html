@@ -4,6 +4,7 @@
       const nameData = $("#form__name").val();
       const emailData = $("#form__email").val();
       const passwordData = $("#form__password").val();
+      const csrfToken = $("input[name=csrfmiddlewaretoken").val();
       if (nameData == "") {
         alert("Enter Name !");
       } else if (emailData == "") {
@@ -11,20 +12,25 @@
       } else if (passwordData == "") {
         alert("Enter PWD !");
       } else {
-        console.log("data found: making ajax call !");
         jsonData = {
           name: nameData,
           email: emailData,
           password: passwordData,
+          csrf: csrfToken,
         };
-
+        console.log("data found: making ajax call !", jsonData);
         // making ajax call
         $.ajax({
           url: "{% url 'create-user' %}",
           method: "POST",
           data: jsonData,
           success: (response) => {
-            console.log("response is : ", response);
+            if (response.msg == "User Created !") {
+              console.log("User Created !", response);
+              $("form")[0].reset();
+            } else {
+              console.log("User Not Created !", response);
+            }
           },
         });
       }
